@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { InsuranceService } from '../services/insurance';
 import { InsuranceContract } from '../models/insurance.model';
 import { Router } from '@angular/router';
@@ -13,7 +13,11 @@ export class Contracts implements OnInit {
   contracts: Array<InsuranceContract> = [];
   errorMessage!: string;
 
-  constructor(private insuranceService: InsuranceService, private router: Router) { }
+  constructor(
+    private insuranceService: InsuranceService, 
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.handleGetContracts();
@@ -23,6 +27,7 @@ export class Contracts implements OnInit {
     this.insuranceService.getContracts().subscribe({
       next: (data) => {
         this.contracts = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.message;

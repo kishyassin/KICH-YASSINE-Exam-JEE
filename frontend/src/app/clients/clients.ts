@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { InsuranceService } from '../services/insurance';
 import { Client } from '../models/insurance.model';
 import { Router } from '@angular/router';
@@ -15,7 +15,11 @@ export class Clients implements OnInit {
   searchKeyword: string = "";
   errorMessage!: string;
 
-  constructor(private insuranceService: InsuranceService, private router: Router) { }
+  constructor(
+    private insuranceService: InsuranceService, 
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.handleGetClients();
@@ -25,7 +29,8 @@ export class Clients implements OnInit {
     this.insuranceService.getClients().subscribe({
       next: (data) => {
         this.clients = data;
-        this.filteredClients = data;
+        this.handleSearch();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.message;
@@ -35,8 +40,8 @@ export class Clients implements OnInit {
 
   handleSearch() {
     this.filteredClients = this.clients.filter(c => 
-      c.nom.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
-      c.email.toLowerCase().includes(this.searchKeyword.toLowerCase())
+      (c.nom && c.nom.toLowerCase().includes(this.searchKeyword.toLowerCase())) ||
+      (c.email && c.email.toLowerCase().includes(this.searchKeyword.toLowerCase()))
     );
   }
 

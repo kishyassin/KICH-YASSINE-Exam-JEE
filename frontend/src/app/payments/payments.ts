@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InsuranceService } from '../services/insurance';
 import { Payment } from '../models/insurance.model';
@@ -19,7 +19,8 @@ export class Payments implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private insuranceService: InsuranceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -37,6 +38,7 @@ export class Payments implements OnInit {
     this.insuranceService.getPayments(this.contractId).subscribe({
       next: (data) => {
         this.payments = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.message;
