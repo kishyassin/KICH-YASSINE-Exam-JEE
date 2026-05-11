@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+          <h5 class="mb-0 text-primary fw-bold">New Client</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="newClientFormGroup" (ngSubmit)="handleSaveClient()">
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Name</label>
+              <input type="text" formControlName="nom" class="form-control bg-light border-0 py-2">
+              <span class="text-danger small" *ngIf="newClientFormGroup.controls['nom'].touched && newClientFormGroup.controls['nom'].errors && newClientFormGroup.controls['nom'].errors?.['required']">
+                Name is required
+              </span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-bold">Email</label>
+              <input type="text" formControlName="email" class="form-control bg-light border-0 py-2">
+              <span class="text-danger small" *ngIf="newClientFormGroup.controls['email'].touched && newClientFormGroup.controls['email'].errors && newClientFormGroup.controls['email'].errors?.['required']">
+                Email is required
+              </span>
+              <span class="text-danger small" *ngIf="newClientFormGroup.controls['email'].touched && newClientFormGroup.controls['email'].errors && newClientFormGroup.controls['email'].errors?.['email']">
+                Invalid email format
+              </span>
+            </div>
+            <div class="d-grid mt-4">
+              <button [disabled]="!newClientFormGroup.valid" class="btn btn-primary py-2 fw-medium">
+                Save Client
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

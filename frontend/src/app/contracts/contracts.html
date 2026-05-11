@@ -1,0 +1,53 @@
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-white py-3">
+    <h5 class="mb-0 text-primary fw-bold">Insurance Contracts</h5>
+  </div>
+  <div class="card-body">
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{errorMessage}}
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" *ngIf="contracts.length > 0">
+        <thead class="table-light text-secondary">
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Contribution</th>
+            <th>Duration</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of contracts">
+            <td>{{c.id}}</td>
+            <td>
+              <span class="badge rounded-pill" [ngClass]="{
+                'bg-info text-dark': c.type === 'AUTO',
+                'bg-success text-white': c.type === 'HOME',
+                'bg-warning text-dark': c.type === 'HEALTH'
+              }">{{c.type}}</span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-warning text-dark': c.status === 'EN_COURS',
+                'bg-success': c.status === 'VALIDE',
+                'bg-danger': c.status === 'RESILIE'
+              }">{{c.status}}</span>
+            </td>
+            <td>{{c.contributionAmount | number:'1.2-2'}} DH</td>
+            <td>{{c.duration}} months</td>
+            <td class="text-end">
+              <button (click)="handleViewPayments(c)" class="btn btn-sm btn-outline-secondary">
+                Payments
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="contracts.length == 0" class="text-center py-5">
+        <p class="text-muted mb-0">No contracts found.</p>
+      </div>
+    </div>
+  </div>
+</div>
